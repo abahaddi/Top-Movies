@@ -1,4 +1,4 @@
-name: Deploy HTML Site
+name: Deploy Top Movies
 
 on:
   push:
@@ -15,16 +15,16 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t my-html-site .
+          docker build -t top-movies.
 
       - name: Stop old container
         run: |
-          docker stop my-html-container || true
-          docker rm my-html-container || true
+          docker stop top-movies-cont || true
+          docker rm top-movies-cont || true
 
       - name: Run new container
         run: |
           docker run -d \
-            --name my-html-container \
+            --name top-movies-cont \
             -p 80:80 \
-            my-html-site
+            top-movies

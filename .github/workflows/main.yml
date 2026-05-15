@@ -1,9 +1,8 @@
-name: Deploy Top Movies.
+name: Deploy Apache Site
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
 
 jobs:
   deploy:
@@ -14,17 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: |
-          docker build -t top-movies .
+        run: docker build -t top-movies .
 
-      - name: Stop old container
-        run: |
-          docker stop top-movies-cont || true
-          docker rm top-movies-cont || true
+      - name: Stop old container (if exists)
+        run: docker rm -f top-movies || true
 
-      - name: Run new container
-        run: |
-          docker run -d \
-            --name top-movies-cont \
-            -p 80:80 \
-            top-movies
+      - name: Run Apache container
+        run: docker run -d -p 80:80 --name top-movies top-movies

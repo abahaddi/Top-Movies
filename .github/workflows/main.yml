@@ -1,0 +1,30 @@
+name: Deploy HTML Site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-html-site .
+
+      - name: Stop old container
+        run: |
+          docker stop my-html-container || true
+          docker rm my-html-container || true
+
+      - name: Run new container
+        run: |
+          docker run -d \
+            --name my-html-container \
+            -p 80:80 \
+            my-html-site

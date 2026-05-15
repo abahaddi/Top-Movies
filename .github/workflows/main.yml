@@ -15,7 +15,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t top-movies.
+          docker build -t top-movies .
 
       - name: Stop old container
         run: |
